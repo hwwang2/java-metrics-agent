@@ -36,8 +36,14 @@ public class MainInterceptor {
             if (cost > counter.max) {
                 counter.max = cost;
             }
-            if (cost > 50 * 1000000) {
+            if (cost > 100 * 1000000) {
+                counter.up100ms++;
+            } else if (cost > 50 * 1000000) {
                 counter.up50ms++;
+            } else if (cost > 20 * 1000000) {
+                counter.up20ms++;
+            } else if (cost > 10 * 1000000) {
+                counter.up10ms++;
             }
 //            System.out.println("Agent: "+counter);
         }
