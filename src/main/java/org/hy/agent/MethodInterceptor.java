@@ -1,4 +1,4 @@
-package org.hy;
+package org.hy.agent;
 
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;
@@ -6,12 +6,11 @@ import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.implementation.bind.annotation.SuperCall;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MainInterceptor {
+public class MethodInterceptor {
     static Map<String, MethodCounter> counterMap = new ConcurrentHashMap<>();
 
     /**
