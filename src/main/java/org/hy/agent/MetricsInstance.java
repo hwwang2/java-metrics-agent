@@ -12,7 +12,9 @@ import java.lang.instrument.Instrumentation;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 public class MetricsInstance {
@@ -54,7 +56,19 @@ public class MetricsInstance {
                 builder1.installOn(inst);
             }
         }
-        executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+            private final ThreadFactory defaultFactory = Executors.defaultThreadFactory();
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
+            public Thread newThread(Runnable r) {
+                Thread thread = this.defaultFactory.newThread(r);
+                if (!thread.isDaemon()) {
+                    thread.setDaemon(true);
+                }
+
+                thread.setName("metrics-hy-" + this.threadNumber.getAndIncrement());
+                return thread;
+            }
+        });
         executorService.scheduleAtFixedRate(() -> {
             if (MethodInterceptor.counterMap.isEmpty()) {
                 AgentLogger.log(Level.FINE, "Agent耗时统计：无调用");

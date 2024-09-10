@@ -1,6 +1,9 @@
 package org.hy.logger;
 
-import java.util.logging.*;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AgentLogger {
     private static final Logger LOGGER = Logger.getLogger(AgentLogger.class.getName());

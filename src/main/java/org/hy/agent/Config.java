@@ -5,7 +5,6 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 示例
