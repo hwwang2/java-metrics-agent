@@ -56,9 +56,22 @@ public class MetricsInstance {
                 builder1.installOn(inst);
             }
         }
+        try {
+            if (config.annotation != null && !config.annotation.trim().isEmpty()) {
+                Class annotation = Class.forName(config.annotation);
+                AgentBuilder.Identified.Extendable builder1 = new AgentBuilder.Default()
+                        .type(ElementMatchers.any())
+                        .transform((builder, typeDescription, classLoader) ->
+                                builder.method(ElementMatchers.isAnnotatedWith(annotation))
+                                        .intercept(MethodDelegation.to(MethodInterceptor.class)));
+            }
+        } catch (ClassNotFoundException e) {
+            AgentLogger.log(Level.WARNING, "未找到注解类型" + config.annotation);
+        }
         executorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
             private final ThreadFactory defaultFactory = Executors.defaultThreadFactory();
             private final AtomicInteger threadNumber = new AtomicInteger(1);
+
             public Thread newThread(Runnable r) {
                 Thread thread = this.defaultFactory.newThread(r);
                 if (!thread.isDaemon()) {

@@ -1,7 +1,10 @@
 package org.hy;
 
 import net.bytebuddy.matcher.StringMatcher;
+import org.hy.agent.Config;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.FileReader;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -12,7 +15,9 @@ import java.time.format.DateTimeFormatter;
  */
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
+        Config config = new Yaml().loadAs(new FileReader("D:\\\\code\\\\MyAgent\\\\src\\\\main\\\\resources\\\\test.yml"), Config.class);
+        System.out.println(config);
         StringMatcher matcher1 = new StringMatcher("main.*", StringMatcher.Mode.MATCHES);
         System.out.println(matcher1.matches("main"));
 

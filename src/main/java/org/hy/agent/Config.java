@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class Config {
     public List<MetricItem> metrics;
+    public String annotation;
 
     public static class MetricItem {
         public String matcher;
@@ -28,7 +29,9 @@ public class Config {
 
     public void loadFromYaml(String file) throws FileNotFoundException {
         Config config = new Yaml().loadAs(new FileReader(file), Config.class);
-        if (config != null)
+        if (config != null){
             metrics = config.metrics;
+            annotation = config.annotation;
+        }
     }
 }
